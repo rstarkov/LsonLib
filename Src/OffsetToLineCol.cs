@@ -1,7 +1,11 @@
-﻿using System;
+﻿// This file is part of the RT.Util project, and is subject to the terms
+// and conditions of the GPL v3 license, available in 'license.txt'.
+// Originally by Roman Starkov and Timwi.
+
+using System;
 using System.Collections.Generic;
 
-namespace RT.Util.Text
+namespace LsonLib
 {
     /// <summary>
     /// Encapsulates a class that offers efficient conversion of a string offset into line/column number. The class
