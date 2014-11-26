@@ -3,6 +3,7 @@
 // Imported from the RT.Util project.
 
 using System;
+using System.Diagnostics;
 
 namespace LsonLib
 {
@@ -16,6 +17,7 @@ namespace LsonLib
         ///     The exception to throw.</param>
         /// <returns>
         ///     This method never returns a value. It always throws.</returns>
+        [DebuggerHidden]
         public static TResult Throw<TResult>(Exception exception)
         {
             throw exception;
