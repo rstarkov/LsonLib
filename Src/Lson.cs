@@ -476,7 +476,7 @@ namespace LsonLib
         }
     }
 
-    /// <summary>Encapsulates a LSON value (e.g. a boolean, a number, a string, a list, a dictionary, etc.)</summary>
+    /// <summary>Encapsulates a LSON value (e.g. a boolean, a number, a string, a dictionary, etc.)</summary>
     [Serializable]
     public abstract class LsonValue : DynamicObject, IEquatable<LsonValue>
     {
@@ -566,7 +566,7 @@ namespace LsonLib
 
         /// <summary>
         ///     Returns an object that allows safe access to the indexers. “Safe” in this context means that the indexers,
-        ///     when given an index or key not found in the list or dictionary, do not throw but instead return <see
+        ///     when given an index or key not found in the dictionary, do not throw but instead return <see
         ///     cref="LsonNoValue.Instance"/> whose getters (such as <see cref="GetString"/>) return null.</summary>
         public LsonSafeValue Safe { get { return new LsonSafeValue(this); } }
 
@@ -711,110 +711,25 @@ namespace LsonLib
         ///     Controls the behavior in case of conversion failure. If true, returns null; if false, throws.</param>
         protected virtual int? getInt(NumericConversionOptions options, bool safe) { return safe ? null : Ut.Throw<int?>(new InvalidOperationException("Only numeric values can be converted to int.")); }
 
-        #region Both IList and IDictionary
+        #region IDictionary
 
-        /// <summary>
-        ///     Removes all items from the current value if it is a <see cref="LsonList"/> or <see cref="LsonDict"/>;
-        ///     otherwise, throws.</summary>
+        /// <summary>Removes all items from the current value if it is an <see cref="LsonDict"/>; otherwise, throws.</summary>
         public virtual void Clear()
         {
-            throw new InvalidOperationException("This method is only supported on dictionary and list values.");
+            throw new InvalidOperationException("This method is only supported on dictionary values.");
         }
 
-        /// <summary>
-        ///     Returns the number of items in the current value if it is a <see cref="LsonList"/> or <see cref="LsonDict"/>;
-        ///     otherwise, throws.</summary>
+        /// <summary>Returns the number of items in the current value if it is an <see cref="LsonDict"/>; otherwise, throws.</summary>
         public virtual int Count
         {
             get
             {
-                throw new InvalidOperationException("This method is only supported on dictionary and list values.");
+                throw new InvalidOperationException("This method is only supported on dictionary values.");
             }
         }
 
-        /// <summary>
-        ///     Returns true if this value is a <see cref="LsonDict"/> or a <see cref="LsonList"/>; otherwise, returns false.</summary>
+        /// <summary>Returns true if this value is an <see cref="LsonDict"/>; otherwise, returns false.</summary>
         public virtual bool IsContainer { get { return false; } }
-
-        #endregion
-
-        #region IList
-
-        /// <summary>
-        ///     Returns the item at the specified <paramref name="index"/> within the current list if it is a <see
-        ///     cref="LsonList"/>; otherwise, throws.</summary>
-        public virtual LsonValue this[int index]
-        {
-            get { throw new InvalidOperationException("This method is only supported on list values."); }
-            set { throw new InvalidOperationException("This method is only supported on list values."); }
-        }
-
-        /// <summary>
-        ///     Add the specified <paramref name="item"/> to the current list if it is a <see cref="LsonList"/>; otherwise,
-        ///     throws.</summary>
-        public virtual void Add(LsonValue item)
-        {
-            throw new InvalidOperationException("This method is only supported on list values.");
-        }
-
-        /// <summary>
-        ///     Add the specified <paramref name="items"/> to the current list if it is a <see cref="LsonList"/>; otherwise,
-        ///     throws.</summary>
-        public virtual void AddRange(IEnumerable<LsonValue> items)
-        {
-            throw new InvalidOperationException("This method is only supported on list values.");
-        }
-
-        /// <summary>
-        ///     Determines whether the specified <paramref name="item"/> is contained in the current list if it is a <see
-        ///     cref="LsonList"/>; otherwise, throws.</summary>
-        public virtual bool Contains(LsonValue item)
-        {
-            throw new InvalidOperationException("This method is only supported on list values.");
-        }
-
-        /// <summary>
-        ///     Inserts the specified <paramref name="item"/> at the specified <paramref name="index"/> to the current list if
-        ///     it is a <see cref="LsonList"/>; otherwise, throws.</summary>
-        public virtual void Insert(int index, LsonValue item)
-        {
-            throw new InvalidOperationException("This method is only supported on list values.");
-        }
-
-        /// <summary>
-        ///     Removes the item at the specified <paramref name="index"/> from the current list if it is a <see
-        ///     cref="LsonList"/>; otherwise, throws.</summary>
-        public virtual void RemoveAt(int index)
-        {
-            throw new InvalidOperationException("This method is only supported on list values.");
-        }
-
-        /// <summary>
-        ///     Returns the index of the first occurrence of the specified <paramref name="item"/> within the current list if
-        ///     it is a <see cref="LsonList"/>; otherwise, throws.</summary>
-        /// <returns>
-        ///     The index of the item, or -1 if the item is not in the list.</returns>
-        public virtual int IndexOf(LsonValue item)
-        {
-            throw new InvalidOperationException("This method is only supported on list values.");
-        }
-
-        /// <summary>
-        ///     Copies the entire list to a compatible one-dimensional <paramref name="array"/>, starting at the specified
-        ///     <paramref name="arrayIndex"/> of the target array, if this is a <see cref="LsonList"/>; otherwise, throws.</summary>
-        /// <param name="array">
-        ///     The one-dimensional array that is the destination of the elements copied from the list. The array must have
-        ///     zero-based indexing.</param>
-        /// <param name="arrayIndex">
-        ///     The zero-based index in array at which copying begins.</param>
-        public virtual void CopyTo(LsonValue[] array, int arrayIndex)
-        {
-            throw new InvalidOperationException("This method is only supported on list values.");
-        }
-
-        #endregion
-
-        #region IDictionary
 
         /// <summary>
         ///     Gets or sets the value associated with the specified <paramref name="key"/> if this value is a <see
@@ -911,8 +826,8 @@ namespace LsonLib
         ///     Determines whether this value is equal to the <paramref name="other"/> value. (See also remarks.)</summary>
         /// <remarks>
         ///     Two values are only considered equal if they are of the same type (e.g. a <see cref="LsonString"/> is never
-        ///     equal to a <see cref="LsonNumber"/> even if they contain the same number). Lists are equal if they contain the
-        ///     same values in the same order. Dictionaries are equal if they contain the same set of key/value pairs.</remarks>
+        ///     equal to a <see cref="LsonNumber"/> even if they contain the same number). Dictionaries are equal if they
+        ///     contain the same set of key/value pairs.</remarks>
         public abstract bool Equals(LsonValue other);
 
         /// <summary>Returns a hash code representing this object.</summary>
@@ -1235,8 +1150,8 @@ namespace LsonLib
         ///     Implements functionality that allows the keys in this LSON dictionary to be accessed as dynamic members.</summary>
         /// <example>
         ///     <code>
-        ///         dynamic dict = LsonDict.Parse(@"{ ""List"": [1, 2, 3] }");
-        ///         Console.WriteLine(dict.List.Count);     // outputs 3</code></example>
+        ///         dynamic dict = LsonDict.Parse(@"{ [""Foo""] = "abc" }");
+        ///         Console.WriteLine(dict.Foo);     // outputs "abc"</code></example>
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
             LsonValue value;
@@ -1975,7 +1890,7 @@ namespace LsonLib
     }
 
     /// <summary>
-    ///     Represents a non-value when looking up a non-existent index or key in a list or dictionary.</summary>
+    ///     Represents a non-value when looking up a non-existent index or key in a dictionary.</summary>
     /// <remarks>
     ///     <list type="bullet">
     ///         <item><description>
