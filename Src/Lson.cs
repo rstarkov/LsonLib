@@ -11,6 +11,8 @@ using System.Text;
 
 namespace LsonLib
 {
+    using Private;
+
     /// <summary>
     ///     Provides methods for handling data in the "LSON" format, consisting of variable assignments in the Lua syntax.
     ///     Actual Lua code is not supported.</summary>

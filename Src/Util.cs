@@ -5,7 +5,7 @@
 using System;
 using System.Diagnostics;
 
-namespace LsonLib
+namespace LsonLib.Private
 {
     static class Ut
     {
