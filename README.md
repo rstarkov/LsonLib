@@ -18,7 +18,7 @@ Strings are parsed by calling `LsonVars.Parse`, which returns a .NET dictionary 
     var myVar1 = d["VAR_1"];    // myVar is typed LsonValue
     var myVar2 = d["VAR_2"];
 
-    File.WriteAllText(somefile, LsonVars.ToString(d));     // serialize back to a string and save to a file
+    File.WriteAllText(somefile, LsonVars.ToString(d)); // serialize back to a file
 
 All LSON values are stored as objects deriving from `LsonValue`. The following types of values are supported: `LsonBool`, `LsonNumber`, `LsonString`, `LsonDict`. `nil` values are stored as the .NET `null` reference.
 
@@ -29,9 +29,9 @@ All LSON values are stored as objects deriving from `LsonValue`. The following t
 
 To extract the underlying value, call one of the `Get*` methods:
 
-    var x = myVar1["Bar"].GetString();    // returns the .NET string "Baz"
-    var y = myVar2["Int"].GetInt();       // returns the integer 235
-    var z = myVar2["StrInt"].GetInt();    // exception: "123" is a string, and this is a "strict" method
+    var x = myVar1["Bar"].GetString();  // returns the .NET string "Baz"
+    var y = myVar2["Int"].GetInt();     // returns the integer 235
+    var z = myVar2["StrInt"].GetInt();  // exception: "123" is a string, and GetInt is strict
 
 Explicit casts to .NET types have the same effect, but also support null:
 
@@ -81,7 +81,7 @@ If you don't want a type incompatibility to result in an exception, use the Get*
 Lenient methods still throw if the operation is impossible:
 
     var a = myVar2["Null"].GetIntLenient();    // throws: nil is not convertible to an integer
-    var b = myVar1["Bar"].GetIntLenient();     // throws: the string "Baz" cannot be parsed as an integer
+    var b = myVar1["Bar"].GetIntLenient();     // throws: the string "Baz" cannot be parsed as int
 
 If you prefer to get a `null` instead of an exception on failure, use the Get*Safe methods. "Safe" and "Lenient" are orthogonal, so `GetIntSafe` will not convert a string even if it's parseable; to do so use `GetIntLenientSafe`:
 
@@ -93,7 +93,7 @@ These method names are long for a reason. This library positions the strict meth
 
 It is also possible to suppress exceptions for missing dictionary keys:
 
-    var a = myVar1["Bar"]["Foo"].GetString();       // throws when accessing "Foo": the object is a string
+    var a = myVar1["Bar"]["Foo"].GetString();       // throws on "Foo": the object is a string
     var b = myVar1["Bar"].Safe["Foo"].GetString();  // returns null instead of throwing
 
 
