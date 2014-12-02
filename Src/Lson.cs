@@ -1458,9 +1458,7 @@ namespace LsonLib
 
         /// <summary>
         ///     Returns a Lua-compatible representation of this string.</summary>
-        /// <param name="quotes">
-        ///     Specifies the style of quotes to use around the string.</param>
-        public string ToString()
+        public override string ToString()
         {
             var sb = new StringBuilder();
             AppendIndented(sb);
