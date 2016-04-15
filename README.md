@@ -100,4 +100,4 @@ It is also possible to suppress exceptions for missing dictionary keys:
 Credits
 -------
 
-This library is more or less a direct port of RT.Util's JSON manipulation library, which is not yet available publicly.
+This library is more or less a direct port of [RT.Util](https://github.com/RT-Projects/RT.Util)'s [JSON library](https://github.com/RT-Projects/RT.Util/blob/master/Src/Json.cs).
